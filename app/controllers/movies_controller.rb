@@ -1,7 +1,6 @@
 class MoviesController < ApplicationController
   before_action :set_movie, only: %i[ show edit update destroy ]
-
-  # GET /movies or /movies.json
+  
   def index
     @movies = Movie.all
     sort_var_one = 'title'
@@ -32,22 +31,10 @@ class MoviesController < ApplicationController
       @title_head_hi = 'hilite' if session[:sort_par] == sort_var_one
       @release_date_hi = 'hilite' if session[:sort_par] == sort_var_two
     
-      
-    # elsif params[:sort_par] == sort_var_two
-    #   @movies = Movie.all.order(params[:sort_par])
-    #   @release_date_hi = 'hilite'
-    # else
-    #   @movies = Movie.all
-    # end
-    
-    # unless params[:ratings].nil?
-    #   @movies = Movie.with_ratings(params[:ratings].keys)
-    #   @include_ratings = params[:ratings].keys
     end
     @include_ratings = session[:ratings].keys if !session[:ratings].nil?
   end
   
-
   # GET /movies/1 or /movies/1.json
   def show
   end
