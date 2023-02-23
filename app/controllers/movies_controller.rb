@@ -4,7 +4,49 @@ class MoviesController < ApplicationController
   # GET /movies or /movies.json
   def index
     @movies = Movie.all
+    sort_var_one = 'title'
+    sort_var_two = 'release_date'
+    @all_ratings = @include_ratings = Movie.unique_ratings
+    
+    if !params[:sort_par].nil?
+      session[:sort_par] = params[:sort_par]
+      @movies = !session[:ratings].nil? ? Movie.with_ratings(session[:ratings].keys).order(params[:sort_par]) \
+                : Movie.all.order(params[:sort_par])
+      @title_head_hi = 'hilite' if params[:sort_par] == sort_var_one
+      @release_date_hi = 'hilite' if params[:sort_par] == sort_var_two
+    elsif !params[:ratings].nil?
+      session[:ratings] = params[:ratings]
+      @movies = !session[:sort_par].nil? ? Movie.with_ratings(params[:ratings].keys).order(session[:sort_par]) \
+                : Movie.with_ratings(params[:ratings].keys)
+      @title_head_hi = 'hilite' if session[:sort_par] == sort_var_one
+      @release_date_hi = 'hilite' if session[:sort_par] == sort_var_two
+    
+    elsif !session[:sort_par].nil? and !session[:ratings].nil?
+      @movies = Movie.with_ratings(session[:ratings].keys).order(session[:sort_par])
+      @title_head_hi = 'hilite' if session[:sort_par] == sort_var_one
+      @release_date_hi = 'hilite' if session[:sort_par] == sort_var_two
+    elsif session[:sort_par].nil? and session[:ratings].nil?
+      @movies = Movie.all
+    else
+      @movies = !session[:sort_par].nil? ? Movie.all.order(session[:sort_par]) : Movie.with_ratings(session[:ratings].keys)
+      @title_head_hi = 'hilite' if session[:sort_par] == sort_var_one
+      @release_date_hi = 'hilite' if session[:sort_par] == sort_var_two
+    
+      
+    # elsif params[:sort_par] == sort_var_two
+    #   @movies = Movie.all.order(params[:sort_par])
+    #   @release_date_hi = 'hilite'
+    # else
+    #   @movies = Movie.all
+    # end
+    
+    # unless params[:ratings].nil?
+    #   @movies = Movie.with_ratings(params[:ratings].keys)
+    #   @include_ratings = params[:ratings].keys
+    end
+    @include_ratings = session[:ratings].keys if !session[:ratings].nil?
   end
+  
 
   # GET /movies/1 or /movies/1.json
   def show
