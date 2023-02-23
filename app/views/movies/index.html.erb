@@ -1,14 +1,39 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Movies</h1>
+<h2>All Movies</h2>
 
-<div id="movies">
-  <% @movies.each do |movie| %>
-    <%= render movie %>
-    <p>
-      <%= link_to "Show this movie", movie %>
-    </p>
-  <% end %>
-</div>
 
-<%= link_to "New movie", new_movie_path %>
+
+<table id="movies">
+  <thead>
+    <tr>
+      <th class = "<%= @title_head_hi %>">
+        <a href = "<%= movies_path(:sort_par => "title") %>" id = "title_header">Movie Title</a>
+      </th>
+      <th>Rating</th>
+      <th class = "<%= @release_date_hi %>">
+        <a href = "<%= movies_path(:sort_par => "release_date") %>" id = "release_date_header">Release Date</a>
+      </th>
+      <th>More Info</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @movies.each do |movie| %>
+      <tr>
+        <td>
+          <%= movie.title %>
+        </td>
+        <td>
+          <%= movie.rating %>
+        </td>
+        <td>
+          <%= movie.release_date %>
+        </td>
+        <td>
+          <%= link_to "More about #{movie.title}", movie_path(movie) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to 'Add new movie', new_movie_path, :class => 'btn btn-primary' %>
