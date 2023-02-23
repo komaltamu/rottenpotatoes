@@ -1,1 +1,4 @@
-https://rottenpotatoeskomal.herokuapp.com/movies
+CSCE 606: Software enginnering: Intro to rails assignment Komal Ilyas (432006386)
+
+Github link: https://github.com/komalilyas/rottenpotatoes
+Heroku app link: https://rottenpotatoeskomal.herokuapp.com/movies
